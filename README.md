@@ -48,7 +48,7 @@ chmod +x wordpress-setup.sh
 ## 📂 Result
 Once the script completes, WordPress will be available at:
 ```
-http://your-server-ip/wordpress
+http://your-server-ip/
 ```
 
 ---
