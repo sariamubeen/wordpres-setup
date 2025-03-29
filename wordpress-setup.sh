@@ -13,13 +13,8 @@ echo
 # Update packages
 sudo apt update && sudo apt upgrade -y
 
-# Add PHP repository for latest version
-sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt update
-
-# Install Apache, MySQL, latest PHP, and extensions
-sudo apt install -y apache2 mysql-server php8.3 php8.3-cli php8.3-mysql libapache2-mod-php8.3 php8.3-curl php8.3-xml php8.3-mbstring php8.3-zip php8.3-gd php8.3-soap php8.3-intl unzip curl wget
+# Install Apache, MySQL, PHP, and extensions
+sudo apt install -y apache2 mysql-server php php-cli php-mysql libapache2-mod-php php-curl php-xml php-mbstring php-zip php-gd php-soap php-intl unzip curl wget
 
 # Enable Apache mod_rewrite
 sudo a2enmod rewrite
@@ -37,20 +32,20 @@ MYSQL_SCRIPT
 cd /tmp
 wget https://wordpress.org/latest.tar.gz
 tar -xvzf latest.tar.gz
-sudo rm -rf /var/www/html/wordpress
-sudo mv wordpress /var/www/html/
+sudo rm -rf /var/www/html/*
+sudo mv wordpress/* /var/www/html/
 
 # Set up wp-config.php
-cd /var/www/html/wordpress
+cd /var/www/html
 sudo cp wp-config-sample.php wp-config.php
 sudo sed -i "s/database_name_here/$WP_DB/" wp-config.php
 sudo sed -i "s/username_here/$WP_USER/" wp-config.php
 sudo sed -i "s/password_here/$WP_PASS/" wp-config.php
 
 # Set permissions
-sudo chown -R www-data:www-data /var/www/html/wordpress
-sudo find /var/www/html/wordpress/ -type d -exec chmod 755 {} \;
-sudo find /var/www/html/wordpress/ -type f -exec chmod 644 {} \;
+sudo chown -R www-data:www-data /var/www/html
+sudo find /var/www/html/ -type d -exec chmod 755 {} \;
+sudo find /var/www/html/ -type f -exec chmod 644 {} \;
 
 # Generate secret keys
 SECRET_KEYS=$(curl -s https://api.wordpress.org/secret-key/1.1/salt/)
@@ -68,5 +63,5 @@ sudo sed -i "/@since 2.6.0/a $SECRET_KEYS" wp-config.php
 sudo systemctl restart apache2
 
 # Show success message
-echo "\n✅ WordPress is installed at: http://your-server-ip/wordpress"
+echo "\n✅ WordPress is installed at: http://your-server-ip"
 echo "Make sure to update Apache config or DNS if needed."
